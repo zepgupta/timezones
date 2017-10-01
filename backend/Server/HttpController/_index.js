@@ -2,7 +2,7 @@ const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const users = require('./routes/users')
+const users = require('./routes/users/_index')
 const timezones = require('./routes/timezones/_index')
 
 module.exports = class HttpController {
@@ -17,9 +17,6 @@ module.exports = class HttpController {
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({extended: false}))
 
-    // let router = express.Router();
-    // router.get('/', (req, res, next) => res.send('testing'))
-    // this.app.use('/', router)
     this.app.use('/users', users.call(this))
     this.app.use('/timezones', timezones.call(this))
 
