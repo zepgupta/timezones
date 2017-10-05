@@ -4,8 +4,6 @@ import { HashRouter, Route, Link } from 'react-router-dom'
 
 import Header from './global/Header'
 import Footer from './global/Footer'
-import Login from'./pageRoutes/LoginPage/_index'
-import Users from './Users'
 
 import AuthRoutes from './AuthRoutes'
 
@@ -15,7 +13,7 @@ const Application = (props) => {
       <HashRouter >
         <div>
           <Header />
-            <Route path="/*" component={AuthRoutes} />
+          <Route path="/*" component={AuthRoutes} />
           <Footer />
         </div>
       </HashRouter> 

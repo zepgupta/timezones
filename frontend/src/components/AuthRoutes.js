@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
-import Login from './pageRoutes/Login/_index'
+import Login from './pages/login/_index'
+import Users from './pages/users/_index'
 
 const AuthRoutes = (props) => {
   if(props.role){
@@ -10,8 +11,7 @@ const AuthRoutes = (props) => {
     switch(props.role) {
       case 'ADMIN':
         authorizedRoutes = (<div>
-          <Route exact path="/users" render={()=> <div>users</div> }  />
-          <Route exact path="/users/:id" render={()=> <div>user #1</div> }  />
+          <Route exact path="/users/:id" component={Users}  />
           <Route exact path="/timezones" render={()=> <div>timezones</div> }  />
           <Route exact path="/timezones/:userId/:tzId" render={()=> <div>timezone #1</div> }  />
         </div>)
@@ -24,7 +24,7 @@ const AuthRoutes = (props) => {
         break
       case 'USER':
         authorizedRoutes = (<div>
-          <Route path="/users/:id" render={()=> <div>user #1</div> }  />
+          <Route path="/users/:id" component={Users}  />
           <Route path="/timezones/:userId" render={()=> <div>timezones</div> }  />
           <Route path="/timezones/:userId/:tzId" render={()=> <div>timezone #1</div> }  />
         </div>)
