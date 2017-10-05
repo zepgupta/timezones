@@ -5,6 +5,8 @@ const HttpController = require('./HttpController/_index')
 const DbController   = require('./DbController/_index')
 const ApiController  = require('./ApiController/_index')
 
+const seed = require('./seed')
+
 module.exports = class Server {
   constructor(defaultConfig) {
     this.config = new nconf.Provider()
@@ -16,15 +18,20 @@ module.exports = class Server {
     this.http = new HttpController(this)
     this.db = new DbController(this)
     this.api = new ApiController(this)
+
+    this.seed = seed.bind(this)
   }
 
-  start() {
+  async start() {
     this.log.info('SERVER', 'STARTING');
-    return Promise.all([
+    //return 
+    await Promise.all([
       this.db.start(),
       this.http.start(),
       this.api.start()
     ])
+
+    await this.seed();
   }
 
   shutdown() {

@@ -1,10 +1,13 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'delete a user')
-  
+
+  const { User, Timezone } = this.server.db.sequelize.models
   let userId = req.params.userId
+  
   try {
     this.server.log.info('DB', 'find user by id and delete')
-    let user = await this.server.db.sequelize.models.user.findById(userId)
+    await Timezone.destroy({where: {userId: userId}})
+    let user = await User.findById(userId)
     await user.destroy()
     res.send({})
   } catch(err) {

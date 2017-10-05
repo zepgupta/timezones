@@ -3,8 +3,8 @@ const ajax = require('superagent')
 module.exports = class ApiController {
   constructor(server) {
     this.server = server
-    this.apiUrl = 'http://api.worldweatheronline.com/premium/v1/tz.ashx'
-    this.apiKey = '2a24574a81f5411c986205747173009'
+    this.apiUrl = this.server.config.get('api:url')
+    this.apiKey = this.server.config.get('api:key')
   }
 
   async start() {

@@ -8,8 +8,8 @@ module.exports = class DbController {
   constructor(server) {
     this.server = server
     
-    this.client = new Client({connectionString: 'postgres://user:pw@localhost:5432/postgres'})
-    this.sequelize = new Sequelize('postgres://user:pw@localhost:5432/db', {logging:null})
+    this.client = new Client({connectionString: this.server.config.get('db:pgUrl')})
+    this.sequelize = new Sequelize(this.server.config.get('db:dbUrl'), {logging:null})
   }
 
   async start() {

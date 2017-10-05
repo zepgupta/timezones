@@ -1,5 +1,5 @@
-const Server = require('./Server/_index')
-//const config = require('./config.defaults')
+const Server = require('./ServerController/_index')
+const config = require('./config.defaults')
 
 function stop_server() {
   if (server) {
@@ -13,6 +13,6 @@ process.on('SIGTERM', stop_server)
 process.on('SIGINT', stop_server)
 process.on('disconnect', stop_server)
 
-const server = new Server()//config)
+const server = new Server(config)
 
 server.start()

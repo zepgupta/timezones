@@ -2,6 +2,7 @@ const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const login = require('./routes/login/_index')
 const users = require('./routes/users/_index')
 const timezones = require('./routes/timezones/_index')
 
@@ -17,6 +18,7 @@ module.exports = class HttpController {
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({extended: false}))
 
+    this.app.use('/login', login.call(this))
     this.app.use('/users', users.call(this))
     this.app.use('/timezones', timezones.call(this))
 
@@ -24,14 +26,14 @@ module.exports = class HttpController {
   }
 
   async start() {
-    const port = 3000//this.server.config.get('http:port')
+    const port = this.server.config.get('http:port')
     this.server.log.info('HTTP', 'Starting server on port ' + port)
     await this.httpServer.listen(port, ()=> this.server.log.info('HTTP', 'Listening on port ' + port))
     return Promise.resolve()
   }
 
   async shutdown() {
-    const port = 3000//this.server.config.get('http:port')
+    const port = this.server.config.get('http:port')
     this.server.log.info('HTTP', 'Stopped listening on port ' + port )
     await this.httpServer.close()
     return Promise.resolve()

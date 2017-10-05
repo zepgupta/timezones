@@ -2,9 +2,12 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'find all timezones for a specific user')
 
-  let userId = req.params.userId
+  const { Timezone } = this.server.db.sequelize.models.timezone
+  const userId = req.params.userId
+  
   try {
-    let timezones = await this.server.db.sequelize.models.timezone.findAll({ where : { userId : userId }})
+    this.server.log.info('DB', 'find all timezones for a specific user')
+    let timezones = await Timezone.findAll({ where : { userId : userId }})
     res.send(timezones)
   } catch(err) {
     this.server.log.error('DB', 'find all timezones for a specific user')

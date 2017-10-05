@@ -3,8 +3,11 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'find all timezones')
  
+  const { Timezone } = this.server.db.sequelize.models.timezone
+
   try {
-    let timezones = await this.server.db.sequelize.models.timezone.findAll()
+    this.server.log.info('DB', 'find all timezones')
+    let timezones = await Timezone.findAll()
     res.send(timezones)
   } catch (err) {
     this.server.log.error('DB', 'find all timezones')

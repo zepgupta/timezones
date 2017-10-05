@@ -1,9 +1,11 @@
 // available to user and admin
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'create a timezone')
-  
+
+  const { Timezone } = this.server.db.sequelize.models.timezone
   let userId = req.params.userId 
   let { city, country, name } = req.body
+  
   let data = await this.server.api.submitRequest(city, country)
   if(data.error) {
     this.server.log.error('API', 'Error received from API:')
@@ -12,7 +14,7 @@ module.exports = async function (req, res, next) {
   } else {
     try {
       this.server.log.info('DB', 'creating timezone')
-      let timezone = await this.server.db.sequelize.models.timezone.create({
+      let timezone = await Timezone.create({
         userId,
         name,
         city,
