@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 const roles = ['USER', 'USERMANAGER', 'ADMIN']
 
-const userCard = props => {
+const UserCard = props => {
 
   let info;
   switch(props.user.role){
@@ -123,4 +123,4 @@ const mapDispatchToProps = dispatch => {
 
 }
 
-export default connect()(userCard)
+export default connect()(UserCard)

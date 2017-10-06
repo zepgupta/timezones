@@ -2,12 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Card from '../../parts/UserCard'
+import Table from '../../parts/UserTable'
 
 const Users = (props)=> {
   let component = (
-    <div className="container">
-      <Card user={props.user} editMode={props.editMode}/>
-    </div>
+    <section>
+      <div className="container">
+        <Card user={props.user} editMode={props.editMode}/>
+      </div>
+      <div className="container">
+        <Table user={props.user} users={props.users}/>
+      </div>
+    </section>
   )
 
   return component

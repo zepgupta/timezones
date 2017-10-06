@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom'
 
 import Login from './pages/login/_index'
 import Users from './pages/users/_index'
+import Timezones from './pages/timezones/_index'
 
 const AuthRoutes = (props) => {
   if(props.role){
@@ -12,21 +13,20 @@ const AuthRoutes = (props) => {
       case 'ADMIN':
         authorizedRoutes = (<div>
           <Route exact path="/users/:id" component={Users}  />
-          <Route exact path="/timezones" render={()=> <div>timezones</div> }  />
-          <Route exact path="/timezones/:userId/:tzId" render={()=> <div>timezone #1</div> }  />
+          <Route exact path="/timezones" component={Timezones}  />
+          <Route exact path="/timezones/:userId/:tzId" component={Timezones}  />
         </div>)
         break
       case 'USERMANAGER':
         authorizedRoutes = (<div>
-          <Route path="/users" render={()=> <div>users</div> }  />
-          <Route path="/users/:id" render={()=> <div>user #1</div> }  />
+          <Route path="/users/:id" component={Users} />
         </div>)
         break
       case 'USER':
         authorizedRoutes = (<div>
           <Route path="/users/:id" component={Users}  />
-          <Route path="/timezones/:userId" render={()=> <div>timezones</div> }  />
-          <Route path="/timezones/:userId/:tzId" render={()=> <div>timezone #1</div> }  />
+          <Route path="/timezones/:userId" component={Timezones} />
+          <Route path="/timezones/:userId/:tzId" component={Timezones} />
         </div>)
         break
       default: 
