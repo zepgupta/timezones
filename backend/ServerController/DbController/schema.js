@@ -53,11 +53,10 @@ module.exports = async function defineSchema() {
         notNull: true,
         isAlpha: true
       },
-      localTime: Sequelize.STRING,
       utcOffset: Sequelize.STRING
     })
 
-    User.belongsToMany(Timezone, {through: 'CreatedBy'} )
+    User.belongsToMany(Timezone, {through: 'UserTimezone'} )
     Timezone.belongsTo(User)
     await this.sequelize.sync({force: this.server.config.get('db:force')})
   } catch(err) {

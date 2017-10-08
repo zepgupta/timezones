@@ -2,17 +2,19 @@ var express = require('express')
 var router = express.Router()
 
 const auth = require('../../middleware/authorize')
+const cache = require('../../middleware/cache')
 
 const getUsers = require('./getUsers');
-const createUser = require('./createUser');
-const deleteUser = require('./deleteUser');
-const modifyUser = require('./modifyUser');
+const createUser = require('./createUser')
+const deleteUser = require('./deleteUser')
+const modifyUser = require('./modifyUser')
 
 module.exports = function() {
   const authorize = auth.bind(this)
 
   router.get('/', // get all users
-    authorize(['USERMANAGER','ADMIN']), 
+    authorize(['USERMANAGER','ADMIN']),
+    cache(this.server.config.get('cache')),
     getUsers.bind(this))
 
   router.post('/', // create a user manually

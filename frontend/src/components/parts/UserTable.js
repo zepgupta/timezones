@@ -32,7 +32,6 @@ const UserTable = props => {
 
 const mapStateToProps = state => {
   return {
-    users: state.users.list,
     selected: state.users.selected
   }
 }

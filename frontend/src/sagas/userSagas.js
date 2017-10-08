@@ -1,9 +1,8 @@
-import { take, put, takeEvery, call, select } from 'redux-saga/effects'
+import { put, call, select } from 'redux-saga/effects'
 import * as ajax from 'superagent'
 import store from 'store'
 
 import {
-  GET_USERS,
   USERS_RECEIVED,
   USER_CREATED,
   USER_MODIFIED,
@@ -15,7 +14,7 @@ import {
 
 const host = 'http://localhost:3000'
 
-export function* getUserFlow(action){
+export function* getUserSaga(){
   try {
     let resp = yield ajax.get(host+'/users').set('x-access-token', store.get('token'))
     yield put({type: USERS_RECEIVED, users: resp.body})
@@ -24,7 +23,7 @@ export function* getUserFlow(action){
   }
 }
 
-export function* createUserFlow(action){
+export function* createUserSaga(action){
   try {
     let resp = yield ajax.post(host+'/users/').send({...action.user}).set('x-access-token', store.get('token'))
     yield put({type: USER_CREATED, user: resp.body})
@@ -33,7 +32,7 @@ export function* createUserFlow(action){
   }
 }
 
-export function* editUserFlow(action){
+export function* editUserSaga(action){
   try {
     let resp = yield ajax.put(host+'/users/'+action.details.id, {...action.details.updates}).set('x-access-token', store.get('token'))
     let state = yield select()
@@ -51,10 +50,10 @@ export function* editUserFlow(action){
   }
 }
 
-export function* deleteUserFlow(action){
+export function* deleteUserSaga(action){
   if(action.userId){
     try {
-      let resp = yield ajax.delete(host+'/users/'+action.userId).set('x-access-token', store.get('token'))
+      yield ajax.delete(host+'/users/'+action.userId).set('x-access-token', store.get('token'))
       let state = yield select()
       if(action.userId === state.session.profile.id) {
         yield put({type: LOGOUT})
@@ -62,7 +61,6 @@ export function* deleteUserFlow(action){
         yield put({type: USER_DELETED})
       }
     } catch(err) {
-      console.log(err)
       yield put({type: SERVER_ERROR})
     }
   }

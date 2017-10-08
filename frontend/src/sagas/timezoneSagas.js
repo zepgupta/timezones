@@ -1,20 +1,18 @@
-import { take, put, takeEvery, call, select } from 'redux-saga/effects'
+import { put, call, select } from 'redux-saga/effects'
 import * as ajax from 'superagent'
 import store from 'store'
 
 import {
-  GET_TIMEZONES,
   TIMEZONES_RECEIVED,
   TIMEZONE_CREATED,
   TIMEZONE_MODIFIED,
   TIMEZONE_DELETED,
-  TIMEZONE_MODIFIED_TIMEZONE,
   SERVER_ERROR
 } from '../actions'
 
 const host = 'http://localhost:3000'
 
-export function* getTimezoneFlow(action){
+export function* getTimezoneSaga(action){
   try {
     let state = yield select()
     let url = state.session.profile.role === 'USER' ? '/timezones/'+state.session.profile.id : '/timezones'
@@ -25,7 +23,7 @@ export function* getTimezoneFlow(action){
   }
 }
 
-export function* createTimezoneFlow(action){
+export function* createTimezoneSaga(action){
   try {
     let resp = yield ajax.post(host+'/timezones/'+action.details.userId).send({
       name: action.details.name,
@@ -37,9 +35,8 @@ export function* createTimezoneFlow(action){
   }
 }
 
-export function* editTimezoneFlow(action) {
+export function* editTimezoneSaga(action) {
   try {
-    let state = yield select()
     let resp = yield ajax.put(host+'/timezones/'+action.details.userId+'/'+action.details.id)
       .send({name: action.details.name})
       .set('x-access-token', store.get('token'))
@@ -49,7 +46,7 @@ export function* editTimezoneFlow(action) {
   }
 }
 
-export function* deleteTimezoneFlow(action) {
+export function* deleteTimezoneSaga(action) {
   if(action.userId) {
     try {
       let state = yield select()

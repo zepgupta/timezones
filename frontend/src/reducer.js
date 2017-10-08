@@ -39,7 +39,6 @@ import {
   CLEAR_ERROR,
 
   REFRESH,
-  TRY_REFRESH
 
 } from './actions'
 

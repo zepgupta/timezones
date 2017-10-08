@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Card from '../../parts/TimezoneCard'
-import Table from '../../parts/TimezoneTable'
+import FilteredTable from '../../parts/TimezoneFilter'
 
 import {getTimezones} from '../../../actions'
 
@@ -24,7 +24,7 @@ class Timezones extends React.Component {
         </div>
         <div className="container">
           { this.props.timezones.length ? 
-            <Table/> : '' }
+            <FilteredTable/> : '' }
         </div>
       </section>
     )

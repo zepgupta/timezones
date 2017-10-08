@@ -1,12 +1,35 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import TimezoneRow from './TimezoneRow'
 import { selectTimezone } from '../../actions'
 
-const TimezoneTable = props => {
+class TimezoneTable extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      timer: null,
+      counter: 0
+    }
+    this.tick = this.tick.bind(this)
+  }
 
-  let component = (
+  componentDidMount() {
+    let timer = setInterval(this.tick, 1000)
+    this.setState({timer})
+  }
+  componentWillUnmount(){
+    clearInterval(this.state.timer)
+  }
+  tick(){
+    this.setState({
+      counter: this.state.counter + 1000
+    })
+  }
+
+  render(){
+    let component = (
       <div className="card">
         <div className="card-content">
           <table className="table is-fullwidth is-scrollable" style={{overflowY:"scroll"}}>
@@ -20,19 +43,22 @@ const TimezoneTable = props => {
               </tr>
             </thead>
             <tbody height="200px" >
-              {props.timezones.map((t,i) => <TimezoneRow key={i} timezone={t} selected={t.id === props.selected}/>)}
+              {this.props.timezones.map((t,i) => <TimezoneRow key={i} 
+                timezone={t} selected={t.id === this.props.selected} 
+                counter={this.state.counter}/>)}
             </tbody>
           </table>
         </div>
       </div>
     )
-  return component
+    return component
+  }
+  
 }
 
 const mapStateToProps = (state)=> {
   return {
     role: state.session.profile.role,
-    timezones: state.timezones.list,
     selected: state.timezones.selected,
   }
 }

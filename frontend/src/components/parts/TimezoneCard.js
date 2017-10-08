@@ -60,10 +60,10 @@ class TimezoneCard extends React.Component {
               <label className="label">City:</label>
               <h2 className="subtitle">&nbsp;{timezone.city}</h2>
             </div>
-            <div className="field">
+            {/* <div className="field">
               <label className="label">Local Time:</label>
               <h2 className="subtitle">&nbsp;{timezone.localTime}</h2>
-            </div>
+            </div> */}
             <div className="field">
               <label className="label">UTC Offset:</label>
               <h2 className="subtitle">&nbsp;{timezone.utcOffset}</h2>

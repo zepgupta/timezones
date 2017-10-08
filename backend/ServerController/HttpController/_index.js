@@ -2,6 +2,7 @@ const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const compression = require('compression')
 
 const login = require('./routes/login/_index')
 const users = require('./routes/users/_index')
@@ -12,11 +13,14 @@ module.exports = class HttpController {
     this.server = server
     this.app = express()
 
-    var corsOptions = {
-      origin: '*',
-    };
-    this.app.use(cors(corsOptions));
-
+    this.app.use(compression(this.server.config.get('compress:opts')))
+    this.app.use(cors({ origin: this.server.config.get('http:headers:cors') }))
+    this.app.use((req,res,next) => {
+      res.header('Access-Control-Allow-Methods', 
+          this.server.config.get('http:headers:methods'))
+      next()
+    })
+    // connect logger to a persistent database in production
     this.app.use((req, res, next) => {
       this.server.log.http('', '%s %s %s', req.method, req.url, req.path)
       next()

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Card from '../../parts/UserCard'
-import Table from '../../parts/UserTable'
+import FilteredTable from '../../parts/UserFilter'
 
 import {getUsers} from '../../../actions'
 
@@ -22,7 +22,7 @@ class Users extends React.Component {
         </div>
     { this.props.role !== 'USER' && this.props.users.length 
       ? <div className="container">
-          <Table />
+          <FilteredTable />
         </div>
       : '' } 
       </section>

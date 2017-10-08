@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import store from 'store'
 import jwt from 'jsonwebtoken'
 
@@ -12,28 +12,34 @@ import { tryRefresh } from '../actions'
 
 const AuthRoutes = (props) => {
   //check for valid token before determining routes. move to saga
-  if(!props.active){
+  if(!props.active && store.get('token')){
     props.tryRefresh()
   }
-  //determine routes
+
+  //determine routes based on auth status
   let authorizedRoutes;
   switch(props.role) {
     case 'USER':
     case 'ADMIN':
-      authorizedRoutes = (<div>
+      authorizedRoutes = (
+      <Switch>
           <Route exact path="/users" component={Users}  />
           <Route exact path="/timezones" component={Timezones}  />
-      </div>)
+          <Redirect to="/users" />
+      </Switch>)
       break
     case 'USERMANAGER':
-      authorizedRoutes = (<div>
-        <Route path="/users" component={Users} />
-      </div>)
+      authorizedRoutes = (
+        <Switch>
+          <Route path="/users" component={Users} />
+          <Redirect to="/users" />
+        </Switch>)
       break
     default: 
       authorizedRoutes = (
         <Switch>
           <Route exact path="/" component={Login} />
+          <Redirect to="/" />
         </Switch>)
       break
   }
