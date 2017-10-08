@@ -12,8 +12,7 @@ module.exports = function(authorizedRoles = ["ADMIN"]) {
 
       const decoded = await promisify(jwt.verify)(token, this.server.config.get('auth:secretKey'))
       if (authorizedRoles.indexOf(decoded.role) > -1) {
-
-        if (decoded.role === "USER" && parseInt(decoded.userId) !== parseInt(req.params.userId)) {
+        if (decoded.role === "USER" && parseInt(decoded.id) !== parseInt(req.params.userId)) {
           this.server.log.warn('MW', 'Authorizing request - User not authorized')
           res.send({error: 'User is not authorized for this request.'})
         } else {

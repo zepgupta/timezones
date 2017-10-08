@@ -12,6 +12,8 @@
     "dependencies": {
         "bulma": "^0.5.3",
         "history": "^4.7.2",
+        "immutability-helper": "^2.4.0",
+        "jsonwebtoken": "^8.0.1",
         "react": "^16.0.0",
         "react-dom": "^16.0.0",
         "react-redux": "^5.0.6",
@@ -20,7 +22,8 @@
         "react-router-redux": "^4.0.8",
         "redux": "^3.7.2",
         "redux-saga": "^0.15.6",
-        "store": "^2.0.12"
+        "store": "^2.0.12",
+        "superagent": "^3.6.3"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

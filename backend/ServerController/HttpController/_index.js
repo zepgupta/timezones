@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const login = require('./routes/login/_index')
 const users = require('./routes/users/_index')
@@ -10,6 +11,11 @@ module.exports = class HttpController {
   constructor(server) {
     this.server = server
     this.app = express()
+
+    var corsOptions = {
+      origin: '*',
+    };
+    this.app.use(cors(corsOptions));
 
     this.app.use((req, res, next) => {
       this.server.log.http('', '%s %s %s', req.method, req.url, req.path)

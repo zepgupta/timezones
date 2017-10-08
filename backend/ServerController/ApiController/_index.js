@@ -27,7 +27,7 @@ module.exports = class ApiController {
     this.server.log.info('API', 'Submitting API request')
     //format city and country names for api request
     if(city.indexOf(' ') > -1) city = city.replace(/ /g, '+') 
-    if(country.indexOf(' ') > -1) country = country.replace(/ /g, '+') 
+    if(country && country.indexOf(' ') > -1) country = country.replace(/ /g, '+') 
     let url = `${this.apiUrl}?q=${city},${country}&key=${this.apiKey}&format=json`
     
     try {

@@ -3,7 +3,7 @@ let jwt = require('jsonwebtoken')
 module.exports = async function loginHandler(req, res, next) {
   this.server.log.info('HTTP', 'User attempting to login')
 
-  const { User } = this.server.db.sequelize.models
+  const User = this.server.db.sequelize.models.user
 
   //check if email already exists, and that password matches
   try {
@@ -14,13 +14,15 @@ module.exports = async function loginHandler(req, res, next) {
     if(user) {
 
       if(req.body.password === user.password) {
-        const token = jwt.sign({
-          userId: user.id,
-          name: user.fullName,
+        const profile = {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           role: user.role,
-        }, this.server.config.get('auth:secretKey'), {expiresIn: "30m"})
-        res.send({token})
+        }
+        const token = jwt.sign(profile, this.server.config.get('auth:secretKey'), {expiresIn: "30m"})
+        res.send({token, profile})
       }
       else {
         res.send({error: 'Incorrect password. Please try again.'})

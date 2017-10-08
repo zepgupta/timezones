@@ -1,9 +1,12 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
-const TimezoneTable = props => {
-  return(
-    <tr>
-      <th>{props.timezone.id}</th>
+import { selectTimezone } from '../../actions'
+
+const TimezoneRow = props => {
+  return (
+    <tr style={{backgroundColor: props.selected ? "#72d0eb" : ""}} onClick={props.selectTimezone(props.timezone.id)}>
+      <th>{props.timezone.userId}</th>
       <td>{props.timezone.name}</td>
       <td>{props.timezone.city}</td>
       <td>{props.timezone.localTime}</td>
@@ -11,4 +14,10 @@ const TimezoneTable = props => {
     </tr>
   )
 }
-export default TimezoneTable
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectTimezone: (id) => () => dispatch(selectTimezone(id))
+  }
+}
+export default connect(null, mapDispatchToProps)(TimezoneRow)

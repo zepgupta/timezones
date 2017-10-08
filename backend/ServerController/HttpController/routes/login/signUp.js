@@ -3,7 +3,7 @@ let jwt = require('jsonwebtoken')
 module.exports = async function signUpHandler(req, res, next) {
   this.server.log.info('HTTP', 'Registering a new user')
 
-  const { User } = this.server.db.sequelize.models.user
+  const User = this.server.db.sequelize.models.user
 
   //check email exists, and that password matches
   try {
@@ -20,20 +20,27 @@ module.exports = async function signUpHandler(req, res, next) {
           lastName  : req.body.lastName,
           email     : req.body.email,
           password  : req.body.password,
-          role      : req.body.role
+          role      : 'USER'
         })
-      const token = jwt.sign({
-          userId: user.id,
-          name: user.fullName,
-          email: user.email,
-          role: user.role,
-        }, this.server.config.get('auth:secretKey'), {expiresIn: "30m"})
-      res.send({token})
+      const profile = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+      }
+      const token = jwt.sign(profile, this.server.config.get('auth:secretKey'), {expiresIn: "30m"})
+      res.send({token, profile})
     }
 
-  } catch(err) {    
-    this.server.log.error('DB', 'User attempting to login')
-    this.server.log.verbose('DB', err)
-    res.send({error: 'Server error.'})
+  } catch(err) {
+    if(JSON.stringify(err).indexOf('Validation') > -1) {
+      this.server.log.warn('DB', 'Validation error')
+      res.send({error: 'Validation Error: Please verify that you entered all the fields and that the email is properly formatted.'})
+    } else {
+      this.server.log.error('DB', 'User attempting to login')
+      this.server.log.verbose('DB', err)
+      res.send({error: 'Server error. Please try again later'})
+    }
   }
 }

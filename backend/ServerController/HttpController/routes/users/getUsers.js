@@ -1,7 +1,7 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'get all users')
   
-  const { User } = this.server.db.sequelize.models.user
+  const User = this.server.db.sequelize.models.user
 
   try {
     this.server.log.info('DB', 'find all users')

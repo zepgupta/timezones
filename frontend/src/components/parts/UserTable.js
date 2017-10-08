@@ -7,7 +7,6 @@ const roles = ['USERMANAGER', 'ADMIN']
 
 const UserTable = props => {
   let component
-  if(props.user.role === 'USERMANAGER' || props.user.role === 'ADMIN') {
     component = (
       <div className="card">
         <div className="card-content">
@@ -22,18 +21,20 @@ const UserTable = props => {
               </tr>
             </thead>
             <tbody height="200px" >
-              {props.users.map((u,i) => <UserRow key={i} user={u} />)}
+              {props.users.map((u,i) => <UserRow key={i} user={u} selected={u.id === props.selected}/>)}
             </tbody>
           </table>
         </div>
       </div>
     )
     return component
+}
+
+const mapStateToProps = state => {
+  return {
+    users: state.users.list,
+    selected: state.users.selected
   }
 }
 
-const mapDispatchToProps = dispatch => {
-
-}
-
-export default connect()(UserTable)
+export default connect(mapStateToProps)(UserTable)

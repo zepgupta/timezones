@@ -4,34 +4,43 @@ import { connect } from 'react-redux'
 import Card from '../../parts/UserCard'
 import Table from '../../parts/UserTable'
 
-const Users = (props)=> {
-  let component = (
-    <section>
-      <div className="container">
-        <Card user={props.user} editMode={props.editMode}/>
-      </div>
-      <div className="container">
-        <Table user={props.user} users={props.users}/>
-      </div>
-    </section>
-  )
+import {getUsers} from '../../../actions'
 
-  return component
-}
+class Users extends React.Component {
+  constructor(props) {
+    super(props)
+    if(props.role !== 'USER') {
+      props.getUsers()
+    }
+  }
 
-const mapStateToProps = state => {
-  if(state.user.role === 'USER') {
-    return {
-      user: state.user,
-      editMode: state.app.users.editMode
-    }
-  } else if (state.user.role === 'ADMIN' || state.user.role === "USERMANAGER") {
-    return {
-      editMode: state.app.users.editMode,
-      user: state.user,
-      users: state.users
-    }
+  render(){
+    let component = (
+      <section>
+        <div className="container">
+          <Card />
+        </div>
+    { this.props.role !== 'USER' && this.props.users.length 
+      ? <div className="container">
+          <Table />
+        </div>
+      : '' } 
+      </section>
+    )
+
+    return component
   }
 }
 
-export default connect(mapStateToProps)(Users)
+const mapStateToProps = state => {
+  return {
+    role: state.session.profile.role,
+    users: state.users.list
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    getUsers: () => dispatch(getUsers())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Users)

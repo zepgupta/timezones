@@ -1,7 +1,7 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'create a new user')
   
-  const { User } = this.server.db.sequelize.models.User
+  const User = this.server.db.sequelize.models.user
 
   try {
     this.server.log.info('DB', 'create user')

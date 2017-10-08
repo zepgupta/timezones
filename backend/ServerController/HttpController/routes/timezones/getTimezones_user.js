@@ -2,7 +2,7 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'find all timezones for a specific user')
 
-  const { Timezone } = this.server.db.sequelize.models.timezone
+  const Timezone = this.server.db.sequelize.models.timezone
   const userId = req.params.userId
   
   try {

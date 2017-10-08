@@ -20,7 +20,7 @@ module.exports = function() {
     createUser.bind(this))
 
   router.delete('/:userId', // delete a user
-    authorize(['USERMANAGER','ADMIN']), 
+    authorize(['USER','USERMANAGER','ADMIN']), 
     deleteUser.bind(this))
 
   router.put('/:userId', // modify a user

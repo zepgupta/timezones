@@ -1,7 +1,8 @@
 module.exports = async function (req, res, next) {
   this.server.log.info('HTTP', 'delete a user')
 
-  const { User, Timezone } = this.server.db.sequelize.models
+  const User = this.server.db.sequelize.models.user
+  const Timezone = this.server.db.sequelize.models.timezone
   let userId = req.params.userId
   
   try {

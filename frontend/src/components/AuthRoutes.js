@@ -1,51 +1,62 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
+import store from 'store'
+import jwt from 'jsonwebtoken'
 
 import Login from './pages/login/_index'
 import Users from './pages/users/_index'
 import Timezones from './pages/timezones/_index'
 
+import { tryRefresh } from '../actions'
+
 const AuthRoutes = (props) => {
-  if(props.role){
-    let authorizedRoutes;
-    switch(props.role) {
-      case 'ADMIN':
-        authorizedRoutes = (<div>
-          <Route exact path="/users/:id" component={Users}  />
-          <Route exact path="/timezones" component={Timezones}  />
-          <Route exact path="/timezones/:userId/:tzId" component={Timezones}  />
-        </div>)
-        break
-      case 'USERMANAGER':
-        authorizedRoutes = (<div>
-          <Route path="/users/:id" component={Users} />
-        </div>)
-        break
-      case 'USER':
-        authorizedRoutes = (<div>
-          <Route path="/users/:id" component={Users}  />
-          <Route path="/timezones/:userId" component={Timezones} />
-          <Route path="/timezones/:userId/:tzId" component={Timezones} />
-        </div>)
-        break
-      default: 
-        authorizedRoutes = (<Route exact path="/" component={Login} />)
-        break
-    }
-    
-    return authorizedRoutes
-  } else {
-    return (
-      <div>
-        <Route exact path="/" component={Login} />
-      </div>
-    )
+  //check for valid token before determining routes. move to saga
+  if(!props.active){
+    props.tryRefresh()
   }
+  //determine routes
+  let authorizedRoutes;
+  switch(props.role) {
+    case 'USER':
+    case 'ADMIN':
+      authorizedRoutes = (<div>
+          <Route exact path="/users" component={Users}  />
+          <Route exact path="/timezones" component={Timezones}  />
+      </div>)
+      break
+    case 'USERMANAGER':
+      authorizedRoutes = (<div>
+        <Route path="/users" component={Users} />
+      </div>)
+      break
+    default: 
+      authorizedRoutes = (
+        <Switch>
+          <Route exact path="/" component={Login} />
+        </Switch>)
+      break
+  }
+  
+  return authorizedRoutes
 }
 
 const mapStateToProps = state => {
-  return {role : state.user.role}
+  if(state.session.active){
+    return {
+      role : state.session.profile.role,
+      active: state.session.active,
+      id: state.session.profile.id
+    }
+  } else {
+    return {
+      active: state.session.active,
+    }
+  }
 }
-
-export default connect(mapStateToProps)(AuthRoutes)
+const mapDispatchToProps = dispatch => {
+  return {
+    tryRefresh: (profile) => dispatch(tryRefresh(profile))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AuthRoutes)
