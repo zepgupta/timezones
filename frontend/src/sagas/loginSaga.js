@@ -4,12 +4,12 @@ import * as ajax from 'superagent'
 
 import { AUTH_SUCCESS, SERVER_ERROR, AUTH_ERROR} from '../actions'
 
-const host = 'http://localhost:3000'
+import {server} from '../default.config'
 
 export default function* loginSaga(action) {
   let url = !action.authInfo.firstName ? '/login' : '/login/new'
   try {
-    let resp = yield ajax.post(host+url, action.authInfo)
+    let resp = yield ajax.post(server+url, action.authInfo)
     if(resp.body && resp.body.error) {
       yield put({type: AUTH_ERROR, msg: {error: resp.body.error}})
     } else {

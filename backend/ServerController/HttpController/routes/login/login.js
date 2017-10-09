@@ -1,4 +1,5 @@
 let jwt = require('jsonwebtoken')
+let bcrypt = require('bcryptjs')
 
 module.exports = async function loginHandler(req, res, next) {
   this.server.log.info('HTTP', 'User attempting to login')
@@ -8,12 +9,15 @@ module.exports = async function loginHandler(req, res, next) {
   //check if email already exists, and that password matches
   try {
     this.server.log.info('DB', 'User attempting to login')
-    let user = await User.findOne({
+    const user = await User.findOne({
       where: {email: req.body.email}
     })
     if(user) {
-
-      if(req.body.password === user.password) {
+      // allows direct matches only to allow originally seeded models to be queried, and because 
+      // the app creates new users as "USERS" by default
+      const match = await req.body.password === user.password ? 
+        true : bcrypt.compare(req.body.password, user.password)
+      if(match) {
         const profile = {
           id: user.id,
           firstName: user.firstName,

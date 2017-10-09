@@ -1,7 +1,8 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-module.exports = {
+const config = {
   entry: './src/_index.js',
   output: {
     filename: 'bundle.js',
@@ -46,3 +47,20 @@ module.exports = {
     })
   ],
 }
+
+if (process.env==="production") {
+  console.log('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
+  config.plugins.push(
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress : {
+        unused    : true,
+        dead_code : true,
+        warnings  : false
+      }
+    })
+  )
+}
+
+module.exports = config

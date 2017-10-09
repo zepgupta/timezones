@@ -1,4 +1,5 @@
-let jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
 module.exports = async function signUpHandler(req, res, next) {
   this.server.log.info('HTTP', 'Registering a new user')
@@ -8,18 +9,20 @@ module.exports = async function signUpHandler(req, res, next) {
   //check email exists, and that password matches
   try {
 
-    let user = await User.findOne({
+    const user = await User.findOne({
       where: {email: req.body.email}
     })
     if(user) {
       res.send({error: 'There is already an account registered with that email address.'})
     
     } else {
-      let user = await User.create({	
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(req.body.password, salt)
+      const user = await User.create({	
           firstName : req.body.firstName,
           lastName  : req.body.lastName,
           email     : req.body.email,
-          password  : req.body.password,
+          password  : hash,
           role      : 'USER'
         })
       const profile = {
@@ -38,7 +41,7 @@ module.exports = async function signUpHandler(req, res, next) {
       this.server.log.warn('DB', 'Validation error')
       res.send({error: 'Validation Error: Please verify that you entered all the fields and that the email is properly formatted.'})
     } else {
-      this.server.log.error('DB', 'User attempting to login')
+      this.server.log.error('DB', 'Registering a new user')
       this.server.log.verbose('DB', err)
       res.send({error: 'Server error. Please try again later'})
     }

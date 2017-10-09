@@ -1,15 +1,25 @@
 {
     "name": "frontend",
     "version": "1.0.0",
+    "private": true,
     "description": "client app for Dhirj's Toptal test project",
     "main": "index.js",
     "scripts": {
-        "build": "webpack",
-        "dev": "webpack-dev-server"
+        "build": "webpack -p --progress",
+        "dev": "webpack-dev-server",
+        "clean": "rimraf dist/*",
+        "prod": "better-npm-run build"
+    },
+    "betterScripts": {
+        "build": {
+            "command": "npm run clean && npm run build",
+            "env": "production"
+        }
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "better-npm-run": "^0.1.0",
         "bulma": "^0.5.3",
         "history": "^4.7.2",
         "immutability-helper": "^2.4.0",

@@ -10,9 +10,9 @@ import Application from './components/_index'
 
 const sagaMiddleware = createSagaMiddleware()
 
-let store = createStore( reducer, 
-  compose(applyMiddleware(sagaMiddleware),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))
+let store = createStore( reducer, //compose(
+    applyMiddleware(sagaMiddleware),
+  /*window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())*/)
 sagaMiddleware.run(sagas)
 
 render(<Application store={store} />, document.getElementById('app'))

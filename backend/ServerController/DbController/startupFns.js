@@ -25,13 +25,18 @@ module.exports.createDatabase = async function() {
   }
 }
 
-module.exports.connectToDatabase = async function() {
+
+const connectToDatabase = async function() {
   try {
     this.server.log.info('DB', 'Connecting to database with sequelize')
     await this.sequelize.authenticate()    
   } catch(err) {
     this.server.log.error('DB', 'Error in connecting to database')
-    this.server.log.error('DB', err)
+    // this.server.log.error('DB', err)
+    setTimeout(async function(){
+      await connectToDatabase()
+    },10000)
     process.exit(1)
   }
 }
+module.exports.connectToDatabase = connectToDatabase
