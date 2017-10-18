@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const roles = ['', 'USER', 'USERMANAGER', 'ADMIN']
+const roles = ['', 'USER', 'USERMANAGER']
 
 import { getUsers, createUser, editUser, deleteUser,
   enterEditMode, exitEditMode, enterCreateMode, exitCreateMode, clientError } from '../../actions'
@@ -171,6 +171,7 @@ class UserCard extends React.Component {
               <div className="container">   
                 <div className="field">
                   <label className="label">Role:</label>
+                  {user.role === 'ADMIN' ? <h2 className="subtitle">&nbsp;{user.role}</h2> :
                   <div className="control">
                     <div className="select">
                       <select value={this.state.eRole} onChange={this.handleChange.bind(this,'eRole')}>
@@ -179,7 +180,8 @@ class UserCard extends React.Component {
                         }
                       </select>
                     </div>
-                  </div>
+                  </div> 
+                  }
                 </div>
                 <div className="field">
                   <label className="label">Email:</label>

@@ -33,9 +33,6 @@ const connectToDatabase = async function() {
   } catch(err) {
     this.server.log.error('DB', 'Error in connecting to database')
     // this.server.log.error('DB', err)
-    setTimeout(async function(){
-      await connectToDatabase()
-    },10000)
     process.exit(1)
   }
 }

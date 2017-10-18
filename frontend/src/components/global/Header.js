@@ -29,7 +29,7 @@ const Header = (props) => {
     <div className="hero-body">
       <div className="container">
         <h1 className="title is-pulled-left" style={{color:'white'}}>
-          Toptal Timezone Test
+          Timezones App
         </h1>
         { props.active ? 
           <button onClick={props.logout} className="button is-pulled-right is-black">Log out</button>

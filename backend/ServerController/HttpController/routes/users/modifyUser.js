@@ -7,7 +7,12 @@ module.exports = async function (req, res, next) {
   try {
     this.server.log.info('DB', 'finding updating user info')
     let user = await User.findById(userId)
-    await user.update(Object.assign({}, user, req.body))
+    let updates = req.body
+    if(user.role === 'ADMIN') {
+      //prevents changing admin status
+      updates.role = 'ADMIN'
+    }
+    await user.update(Object.assign({}, user, updates))
     user = await User.findById(userId)
     res.send({
       id: user.id,

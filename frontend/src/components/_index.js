@@ -15,11 +15,13 @@ const Application = (props) => {
   return (
     <Provider store={props.store}>
       <Router history={history}>
-        <div>
+        <div style={{display:"flex",minHeight:"100vh",flexDirection:"column"}}>
           <Error />
           <Busy />
           <Header />
-          <Route path="/*" component={AuthRoutes} />
+          <div style={{flex:1}}>
+            <Route path="/*" component={AuthRoutes} />
+          </div>
           <Footer />
         </div>
       </Router> 
