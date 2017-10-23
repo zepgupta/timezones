@@ -14,6 +14,8 @@ The app is built for a docker environment. If you do not have docker, you will n
 ## Shutting down the App
 Ctrl+C until you have access to enter new commands into the terminal / command prompt. Then enter "docker-compose down"
 
+## Notes
+
 The database is seeded with a few profiles to start off. You can login as an admin with the acount:
 * un: tedmosby@gmail.com
 * pw: password
