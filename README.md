@@ -8,6 +8,12 @@ The timezones app is a simple app that allows users to:
 
 Timezones are based on a city (user entered), and the server will hit an api to retrieve the UTC offset.
 
+## Starting the App
+The app is built for a docker environment. If you do not have docker, you will need to install it. Once docker is installed, simply navigate to the root of the folder and in terminal / command prompt, enter "docker-compose up"
+
+## Shutting down the App
+Ctrl+C until you have access to enter new commands into the terminal / command prompt. Then enter "docker-compose down"
+
 The database is seeded with a few profiles to start off. You can login as an admin with the acount:
 * un: tedmosby@gmail.com
 * pw: password
