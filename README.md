@@ -1,4 +1,7 @@
 # Timezones App
+
+!The API key used in this application has expired, and so the application will not work as expected currently.
+
 The timezones app is a simple app that allows users to:
 * authenticate by logging in or creating an acount
 * USERS can edit their own profile
