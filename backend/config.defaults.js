@@ -18,7 +18,7 @@ module.exports = {
   },
   api: {
     url: 'http://api.worldweatheronline.com/premium/v1/tz.ashx',
-    key: '2a24574a81f5411c986205747173009',
+    key: '6f7995d78a5f42f9a9c182711172012',
   },
   cache: 2,  //seconds
   auth: {
